@@ -2,9 +2,11 @@ package com.bash.contentcalendar.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.bash.contentcalendar.model.Content;
 import com.bash.contentcalendar.model.Status;
@@ -14,8 +16,13 @@ import com.bash.contentcalendar.repository.ContentCollectionRepository;
 
 import jakarta.annotation.PostConstruct;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping("/api/content")
@@ -32,6 +39,19 @@ public class ContentController {
     public List<Content> findAll() {
         return repository.findAll();
 
+    }
+
+    // Create Read Update Delete
+    @GetMapping("/{id}")
+    public Content findById(@PathVariable Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not found"));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("")
+    public void create(@RequestBody Content content) {
+        repository.save(content);
     }
 
 }
