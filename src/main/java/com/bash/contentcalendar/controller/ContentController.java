@@ -15,8 +15,10 @@ import com.bash.contentcalendar.model.Type;
 import com.bash.contentcalendar.repository.ContentCollectionRepository;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/content")
+
 public class ContentController {
     private final ContentCollectionRepository repository;
 
@@ -52,7 +56,7 @@ public class ContentController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public void create(@RequestBody Content content) {
+    public void create(@Valid @RequestBody Content content) {
         repository.save(content);
     }
 
